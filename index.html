@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>AI 분석 결과 통합 목록</title>
+    <style>
+        body { 
+            font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; 
+            background: #f4f6fb; 
+            margin:0; 
+            padding:0;
+        }
+        .container { 
+            max-width: 1200px; 
+            margin: 40px auto; 
+            background: #fff; 
+            border-radius: 18px; 
+            box-shadow: 0 4px 24px 0 rgba(30,34,90,0.08); 
+            padding: 2.5rem 2rem 2rem 2rem;
+        }
+        h1 { 
+            color: #2b3a55; 
+            margin-bottom: 2rem; 
+            font-size: 2.5rem; 
+            font-weight: 700; 
+            letter-spacing: -1px;
+            text-align: center;
+        }
+        .date-section {
+            margin-bottom: 3rem;
+            border: 1px solid #e3e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .date-header {
+            background: #f7f9fc;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e3e8f0;
+        }
+        .date-title {
+            color: #3a405a;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        .date-content {
+            padding: 1.5rem;
+        }
+        table { 
+            width: 100%; 
+            border-collapse: separate; 
+            border-spacing: 0; 
+            background: #fff; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            box-shadow: 0 1px 4px 0 rgba(30,34,90,0.04);
+        }
+        th, td { 
+            padding: 14px 16px; 
+            text-align: left; 
+            font-size: 1rem;
+        }
+        th { 
+            background: #f7f9fc; 
+            color: #3a405a; 
+            font-weight: 600; 
+            border-bottom: 1px solid #e3e8f0;
+        }
+        td { 
+            background: #fff; 
+            border-bottom: 1px solid #f0f2f7;
+        }
+        tr:last-child td { 
+            border-bottom: none;
+        }
+        tr.clickable:hover { 
+            background: #e6f7ff; 
+            cursor: pointer;
+        }
+        .summary-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .stat-card {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            min-width: 150px;
+            margin: 0.5rem;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2b3a55;
+        }
+        .stat-label {
+            color: #6b7280;
+            margin-top: 0.5rem;
+        }
+        .folder-link {
+            display: inline-block;
+            background: #3b82f6;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            margin: 0.5rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .folder-link:hover {
+            background: #2563eb;
+        }
+        @media (max-width: 600px) {
+            .container { 
+                padding: 1rem 0.5rem;
+                margin: 20px auto;
+            }
+            h1 { 
+                font-size: 1.8rem;
+            }
+            .date-title {
+                font-size: 1.1rem;
+            }
+            th, td { 
+                font-size: 0.95rem; 
+                padding: 10px 8px;
+            }
+            .summary-stats {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+    <script>
+        function goToDetail(filename) {
+            window.location.href = filename;
+        }
+        
+        function goToFolder(folderPath) {
+            window.location.href = folderPath + '/분석결과_목록.html';
+        }
+        
+        function filterByDate(date) {
+            const sections = document.querySelectorAll('.date-section');
+            sections.forEach(section => {
+                if (date === 'all' || section.dataset.date === date) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 AI 분석 결과 통합 목록</h1>
+        
+        <div class="summary-stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalStocks">0</div>
+                <div class="stat-label">총 분석 종목</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="buyCount">0</div>
+                <div class="stat-label">매수 고려</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="neutralCount">0</div>
+                <div class="stat-label">관망</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="sellCount">0</div>
+                <div class="stat-label">매수 부적합</div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h3>📁 폴더별 분석 결과 바로가기</h3>
+            <div id="folder-links">
+                <!-- 폴더 링크들이 여기에 동적으로 추가됩니다 -->
+            </div>
+        </div>
+
+        <!-- 2025-08-07\1 -->
+        <div class="date-section" data-date="2025-08-07\1">
+            <div class="date-header">
+                <h2 class="date-title">📅 1 분석 결과</h2>
+                <a href="2025-08-07\1/분석결과_목록.html" class="folder-link" target="_blank">
+                    📁 폴더 열기
+                </a>
+            </div>
+            <div class="date-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>종목코드</th>
+                            <th>종목명</th>
+                            <th>최종 투자의견</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-07\1/271830_팸텍.html')">
+                            <td>271830</td>
+                            <td><a href="2025-08-07\1/271830_팸텍.html" style="color:inherit;text-decoration:none;">팸텍</a></td>
+                            <td>📊 📈 **관심 (Watch)**</td>
+                        </tr>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-07\1/451250_삐아.html')">
+                            <td>451250</td>
+                            <td><a href="2025-08-07\1/451250_삐아.html" style="color:inherit;text-decoration:none;">삐아</a></td>
+                            <td>🟡 🧐 **관망 후 진입 (Wait &amp; See)**</td>
+                        </tr>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-07\1/108860_셀바스AI.html')">
+                            <td>108860</td>
+                            <td><a href="2025-08-07\1/108860_셀바스AI.html" style="color:inherit;text-decoration:none;">셀바스AI</a></td>
+                            <td>🔴 ⛔ **보류 (Hold/Avoid)**</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 2025-08-07\2 -->
+        <div class="date-section" data-date="2025-08-07\2">
+            <div class="date-header">
+                <h2 class="date-title">📅 2 분석 결과</h2>
+                <a href="2025-08-07\2/분석결과_목록.html" class="folder-link" target="_blank">
+                    📁 폴더 열기
+                </a>
+            </div>
+            <div class="date-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>종목코드</th>
+                            <th>종목명</th>
+                            <th>최종 투자의견</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-07\2/094360_칩스앤미디어.html')">
+                            <td>094360</td>
+                            <td><a href="2025-08-07\2/094360_칩스앤미디어.html" style="color:inherit;text-decoration:none;">칩스앤미디어</a></td>
+                            <td>✅ 🤔 **매수(Buy) 의견**. 교과서적인 기술적 패턴(장기 이평선 돌파 → 지지 → 반등)을 보이고 있으며, 손절 라인이 명확하여 위험 관리가 용이합니다. 최근의 긍정적인 실적과 성장 모멘텀이 주가 하방을 지지하고 상승 동력으로 작용할 가능성이 높아 단기 트레이딩에 매우 적합하다고 판단됩니다.</td>
+                        </tr>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-07\2/054930_유신.html')">
+                            <td>054930</td>
+                            <td><a href="2025-08-07\2/054930_유신.html" style="color:inherit;text-decoration:none;">유신</a></td>
+                            <td>🟡 🤔 **중립(Neutral) 의견**. 단기적으로 가장 강력한 재료인 &#x27;우크라이나 재건&#x27; 뉴스가 발생하여 주가 급등 가능성이 존재합니다. 하지만 &#x27;강한 거래량을 동반한 장기 이평선 돌파 후 지지&#x27;라는 안정적인 기술적 요건을 충족하지 못했기 때문에 변동성이 매우 클 수 있습니다. 제시된 분석 기준으로는 &#x27;부적합&#x27;하나, 뉴스 매매를 선호하는 공격적 투자자라면 단기적 접근은 가능할 수 있습니다.</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 2025-08-08\1 -->
+        <div class="date-section" data-date="2025-08-08\1">
+            <div class="date-header">
+                <h2 class="date-title">📅 1 분석 결과</h2>
+                <a href="2025-08-08\1/분석결과_목록.html" class="folder-link" target="_blank">
+                    📁 폴더 열기
+                </a>
+            </div>
+            <div class="date-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>종목코드</th>
+                            <th>종목명</th>
+                            <th>최종 투자의견</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-08\1/014160_대영포장.html')">
+                            <td>014160</td>
+                            <td><a href="2025-08-08\1/014160_대영포장.html" style="color:inherit;text-decoration:none;">대영포장</a></td>
+                            <td>✅ 🧐 **관망 후 조건부 매수 (Conditional Buy)**</td>
+                        </tr>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-08\1/108860_셀바스AI.html')">
+                            <td>108860</td>
+                            <td><a href="2025-08-08\1/108860_셀바스AI.html" style="color:inherit;text-decoration:none;">셀바스AI</a></td>
+                            <td>✅ 🚫 **매수 부적합 (Not Suitable for Buying)**</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 2025-08-08\2 -->
+        <div class="date-section" data-date="2025-08-08\2">
+            <div class="date-header">
+                <h2 class="date-title">📅 2 분석 결과</h2>
+                <a href="2025-08-08\2/분석결과_목록.html" class="folder-link" target="_blank">
+                    📁 폴더 열기
+                </a>
+            </div>
+            <div class="date-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>종목코드</th>
+                            <th>종목명</th>
+                            <th>최종 투자의견</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-08\2/314930_바이오다인.html')">
+                            <td>314930</td>
+                            <td><a href="2025-08-08\2/314930_바이오다인.html" style="color:inherit;text-decoration:none;">바이오다인</a></td>
+                            <td>✅ 🏆 **매수 (BUY) / 등급: ★★★★★ (적극 추천)**</td>
+                        </tr>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-08\2/000230_일동홀딩스.html')">
+                            <td>000230</td>
+                            <td><a href="2025-08-08\2/000230_일동홀딩스.html" style="color:inherit;text-decoration:none;">일동홀딩스</a></td>
+                            <td>✅ ⚖️ **관망 후 매수 (Wait &amp; See) / 등급: ★★★☆☆ (보통)**</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 2025-08-08\3 -->
+        <div class="date-section" data-date="2025-08-08\3">
+            <div class="date-header">
+                <h2 class="date-title">📅 3 분석 결과</h2>
+                <a href="2025-08-08\3/분석결과_목록.html" class="folder-link" target="_blank">
+                    📁 폴더 열기
+                </a>
+            </div>
+            <div class="date-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>종목코드</th>
+                            <th>종목명</th>
+                            <th>최종 투자의견</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-08\3/007070_GS리테일.html')">
+                            <td>007070</td>
+                            <td><a href="2025-08-08\3/007070_GS리테일.html" style="color:inherit;text-decoration:none;">GS리테일</a></td>
+                            <td>✅ ✨ **매수 (BUY)**</td>
+                        </tr>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-08\3/086390_유니테스트.html')">
+                            <td>086390</td>
+                            <td><a href="2025-08-08\3/086390_유니테스트.html" style="color:inherit;text-decoration:none;">유니테스트</a></td>
+                            <td>✅ ✨ **매수 후 관망 (Trading BUY)**</td>
+                        </tr>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-08\3/014160_대영포장.html')">
+                            <td>014160</td>
+                            <td><a href="2025-08-08\3/014160_대영포장.html" style="color:inherit;text-decoration:none;">대영포장</a></td>
+                            <td>🟡 ❌ **매도 또는 관망 (Sell or Hold)**</td>
+                        </tr>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-08\3/302550_리메드.html')">
+                            <td>302550</td>
+                            <td><a href="2025-08-08\3/302550_리메드.html" style="color:inherit;text-decoration:none;">리메드</a></td>
+                            <td>🟡 🤔 **관망 후 접근 (Wait &amp; See)**</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 2025-08-08\4 -->
+        <div class="date-section" data-date="2025-08-08\4">
+            <div class="date-header">
+                <h2 class="date-title">📅 4 분석 결과</h2>
+                <a href="2025-08-08\4/분석결과_목록.html" class="folder-link" target="_blank">
+                    📁 폴더 열기
+                </a>
+            </div>
+            <div class="date-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>종목코드</th>
+                            <th>종목명</th>
+                            <th>최종 투자의견</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-08\4/013890_지누스.html')">
+                            <td>013890</td>
+                            <td><a href="2025-08-08\4/013890_지누스.html" style="color:inherit;text-decoration:none;">지누스</a></td>
+                            <td>✅ 💰 **적극 매수 (Strong BUY) ⭐⭐⭐⭐⭐**근거: 기술적으로 가장 신뢰도 높은 매수 타점 중 하나인 &#x27;장기 이평선 돌파 후 첫 지지&#x27;가 확인되었고, 동시에 &#x27;실적 흑자전환&#x27;이라는 기업 가치의 근본적인 변화를 알리는 뉴스가 발생했습니다. 손익비(Risk/Reward Ratio)가 매우 매력적인 구간이며, 명확한 지지선(19,550원)과 손절 라인(19,200원)을 기반으로 안정적인 리스크 관리가 가능하여 적극적인 매수를 추천합니다.</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 2025-08-11\1 -->
+        <div class="date-section" data-date="2025-08-11\1">
+            <div class="date-header">
+                <h2 class="date-title">📅 1 분석 결과</h2>
+                <a href="2025-08-11\1/분석결과_목록.html" class="folder-link" target="_blank">
+                    📁 폴더 열기
+                </a>
+            </div>
+            <div class="date-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>종목코드</th>
+                            <th>종목명</th>
+                            <th>최종 투자의견</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-11\1/130500_GH신소재 .html')">
+                            <td>130500</td>
+                            <td><a href="2025-08-11\1/130500_GH신소재 .html" style="color:inherit;text-decoration:none;">GH신소재</a></td>
+                            <td>✅ ✅ 매수 고려 (Trading Buy)</td>
+                        </tr>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-11\1/406820_뷰티스킨 .html')">
+                            <td>406820</td>
+                            <td><a href="2025-08-11\1/406820_뷰티스킨 .html" style="color:inherit;text-decoration:none;">뷰티스킨</a></td>
+                            <td>🟡 🟡 관망 후 재접근 (Neutral)</td>
+                        </tr>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-11\1/084650_랩지노믹스 .html')">
+                            <td>084650</td>
+                            <td><a href="2025-08-11\1/084650_랩지노믹스 .html" style="color:inherit;text-decoration:none;">랩지노믹스</a></td>
+                            <td>✅ 🔴 매수 부적합 (Sell/Avoid)</td>
+                        </tr>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-11\1/067370_선바이오 .html')">
+                            <td>067370</td>
+                            <td><a href="2025-08-11\1/067370_선바이오 .html" style="color:inherit;text-decoration:none;">선바이오</a></td>
+                            <td>🟡 🟡 관망 (Neutral)</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 2025-08-11\2 -->
+        <div class="date-section" data-date="2025-08-11\2">
+            <div class="date-header">
+                <h2 class="date-title">📅 2 분석 결과</h2>
+                <a href="2025-08-11\2/분석결과_목록.html" class="folder-link" target="_blank">
+                    📁 폴더 열기
+                </a>
+            </div>
+            <div class="date-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>종목코드</th>
+                            <th>종목명</th>
+                            <th>최종 투자의견</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-11\2/025900_동화기업.html')">
+                            <td>025900</td>
+                            <td><a href="2025-08-11\2/025900_동화기업.html" style="color:inherit;text-decoration:none;">동화기업</a></td>
+                            <td>✅ 💡 **&#x27;중립적 매수 (Neutral Buy)&#x27;**</td>
+                        </tr>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-11\2/340930_유일에너테크.html')">
+                            <td>340930</td>
+                            <td><a href="2025-08-11\2/340930_유일에너테크.html" style="color:inherit;text-decoration:none;">유일에너테크</a></td>
+                            <td>✅ 🚀 **&#x27;적극 매수 (Strong Buy)&#x27;**</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 2025-08-11\3 -->
+        <div class="date-section" data-date="2025-08-11\3">
+            <div class="date-header">
+                <h2 class="date-title">📅 3 분석 결과</h2>
+                <a href="2025-08-11\3/분석결과_목록.html" class="folder-link" target="_blank">
+                    📁 폴더 열기
+                </a>
+            </div>
+            <div class="date-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>종목코드</th>
+                            <th>종목명</th>
+                            <th>최종 투자의견</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-11\3/439580_블루엠텍 .html')">
+                            <td>439580</td>
+                            <td><a href="2025-08-11\3/439580_블루엠텍 .html" style="color:inherit;text-decoration:none;">블루엠텍</a></td>
+                            <td>✅ ✅ **적극 매수 (Very Attractive)**</td>
+                        </tr>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-11\3/192250_케이사인 .html')">
+                            <td>192250</td>
+                            <td><a href="2025-08-11\3/192250_케이사인 .html" style="color:inherit;text-decoration:none;">케이사인</a></td>
+                            <td>✅ ✅ **매수 고려 (Attractive)**</td>
+                        </tr>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-11\3/236810_엔비티 .html')">
+                            <td>236810</td>
+                            <td><a href="2025-08-11\3/236810_엔비티 .html" style="color:inherit;text-decoration:none;">엔비티</a></td>
+                            <td>🟡 ⚠️ **관망 (Neutral)**</td>
+                        </tr>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-11\3/271830_팸텍 .html')">
+                            <td>271830</td>
+                            <td><a href="2025-08-11\3/271830_팸텍 .html" style="color:inherit;text-decoration:none;">팸텍</a></td>
+                            <td>🟡 ⚠️ **관망 (Neutral)**</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 2025-08-11\4 -->
+        <div class="date-section" data-date="2025-08-11\4">
+            <div class="date-header">
+                <h2 class="date-title">📅 4 분석 결과</h2>
+                <a href="2025-08-11\4/분석결과_목록.html" class="folder-link" target="_blank">
+                    📁 폴더 열기
+                </a>
+            </div>
+            <div class="date-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>종목코드</th>
+                            <th>종목명</th>
+                            <th>최종 투자의견</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-11\4/007110_일신석재.html')">
+                            <td>007110</td>
+                            <td><a href="2025-08-11\4/007110_일신석재.html" style="color:inherit;text-decoration:none;">일신석재</a></td>
+                            <td>📊 📈 **관심 (Watchful) / 단기 트레이딩**</td>
+                        </tr>
+
+                        <tr class="clickable" onclick="goToDetail('2025-08-11\4/270660_에브리봇.html')">
+                            <td>270660</td>
+                            <td><a href="2025-08-11\4/270660_에브리봇.html" style="color:inherit;text-decoration:none;">에브리봇</a></td>
+                            <td>🟡 📉 **부정적 (Negative) / 관망**</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        </div>
+
+        <script>
+            // 폴더 링크 생성
+            function generateFolderLinks() {
+                const folderLinks = document.getElementById('folder-links');
+                const sections = document.querySelectorAll('.date-section');
+                
+                sections.forEach(section => {
+                    const date = section.dataset.date;
+                    const title = section.querySelector('.date-title').textContent;
+                    const link = document.createElement('a');
+                    link.href = date + '/분석결과_목록.html';
+                    link.className = 'folder-link';
+                    link.textContent = title.replace('📅 ', '');
+                    link.target = '_blank';
+                    folderLinks.appendChild(link);
+                });
+            }
+            
+            // 통계 계산
+            function calculateStats() {
+                const rows = document.querySelectorAll('tbody tr');
+                let buyCount = 0;
+                let neutralCount = 0;
+                let sellCount = 0;
+                
+                rows.forEach(row => {
+                    const opinion = row.querySelector('td:last-child').textContent;
+                    if (opinion.includes('매수') || opinion.includes('Buy') || opinion.includes('BUY') || opinion.includes('적극') || opinion.includes('Strong')) {
+                        buyCount++;
+                    } else if (opinion.includes('관망') || opinion.includes('Neutral') || opinion.includes('Wait') || opinion.includes('중립')) {
+                        neutralCount++;
+                    } else if (opinion.includes('매도') || opinion.includes('Sell') || opinion.includes('부적합') || opinion.includes('Avoid') || opinion.includes('보류')) {
+                        sellCount++;
+                    }
+                });
+                
+                const totalStocks = buyCount + neutralCount + sellCount;
+                
+                document.getElementById('totalStocks').textContent = totalStocks;
+                document.getElementById('buyCount').textContent = buyCount;
+                document.getElementById('neutralCount').textContent = neutralCount;
+                document.getElementById('sellCount').textContent = sellCount;
+            }
+            
+            // 페이지 로드 시 실행
+            window.addEventListener('load', function() {
+                generateFolderLinks();
+                calculateStats();
+            });
+        </script>
+    </body>
+</html>
