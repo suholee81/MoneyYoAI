@@ -1,0 +1,114 @@
+
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <title>AI 분석 결과 - 인산가</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            body {
+                font-family: 'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', Arial, sans-serif;
+                background: #f4f6fb;
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 95vw;
+                width: 95vw;
+                margin: 20px auto;
+                background: #fff;
+                border-radius: 18px;
+                box-shadow: 0 4px 24px 0 rgba(30,34,90,0.08), 0 1.5px 6px 0 rgba(30,34,90,0.03);
+                padding: 2.5rem 2rem 2rem 2rem;
+            }
+            h2 {
+                color: #2b3a55;
+                margin-bottom: 2rem;
+                font-size: 2rem;
+                font-weight: 700;
+                letter-spacing: -1px;
+            }
+            .card-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                gap: 2rem;
+            }
+            .card {
+                background: #f7f9fc;
+                border-radius: 14px;
+                box-shadow: 0 2px 8px 0 rgba(30,34,90,0.06);
+                padding: 1.5rem 1.2rem;
+                display: flex;
+                flex-direction: column;
+                min-width: 0;
+                word-break: break-all;
+                transition: box-shadow 0.2s;
+            }
+            .card:hover {
+                box-shadow: 0 6px 24px 0 rgba(30,34,90,0.13);
+            }
+            .single-card {
+                max-width: 90%;
+                margin: 0 auto;
+            }
+            .kv-row {
+                display: flex;
+                align-items: flex-start;
+                margin-bottom: 0.7em;
+            }
+            .kv-key {
+                min-width: 120px;
+                font-weight: 600;
+                color: #3a405a;
+                margin-right: 1em;
+                flex-shrink: 0;
+            }
+            .kv-value {
+                color: #222;
+                flex: 1;
+                word-break: break-word;
+            }
+            @media (max-width: 1200px) {
+                .container {
+                    max-width: 98vw;
+                    width: 98vw;
+                    margin: 10px auto;
+                    padding: 2rem 1.5rem;
+                }
+            }
+            @media (max-width: 800px) {
+                .container {
+                    max-width: 100vw;
+                    width: 100vw;
+                    margin: 0;
+                    padding: 1rem 0.5rem;
+                    border-radius: 0;
+                }
+                h2 {
+                    font-size: 1.3rem;
+                }
+                .single-card {
+                    max-width: 100%;
+                }
+            }
+            @media (max-width: 600px) {
+                .card-grid {
+                    gap: 1rem;
+                }
+                .card {
+                    padding: 1rem 0.7rem;
+                }
+                .kv-key {
+                    min-width: 100px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div style='margin-bottom:1.5rem'><a href='분석결과_목록.html' style='color:#2b3a55;font-weight:600;text-decoration:none;font-size:1.1rem;'>&larr; 목록으로 돌아가기</a></div>
+            <h2>AI 분석 결과 - 인산가</h2>
+            <div class='card single-card'><div class='kv-row' style='padding-left:0px'><span class='kv-key'>🔹 개요</span><span class='kv-value'>인산가는 최근 주가가 240일 이동평균선을 상향 돌파했으나, 거래량이 현저히 부족하여 기술적 신뢰도가 매우 낮은 상황입니다.<br>상승 동력이 약해 단기 트레이딩 관점에서의 매수 근거가 부족하다고 판단됩니다.<br></span></div><div class='kv-row' style='padding-left:0px'><span class='kv-key'>📈 종목정보</span><span class='kv-value'>인산가(277410)</span></div><div class='kv-row' style='padding-left:0px'><span class='kv-key'>📊 기술적분석</span><span class='kv-value'>📈 **돌파**: 240일 이동평균선(약 1,332원)을 2025-08-06에 소폭 상향 돌파했습니다.<br>❓ **신뢰도 문제**: 돌파 당일의 거래량이 20일 평균 거래량에 크게 못 미치는 수준입니다.<br>이는 상승 동력이 매우 약하며, 해당 돌파가 거짓 신호(Fake breakout)일 가능성이 높다는 것을 시사하는 결정적 요인입니다.<br>📊 **캔들 및 거래량**: 양봉으로 마감했으나, 거래량 미수반으로 인해 상승의 진정성을 신뢰하기 어렵습니다.<br>현재로서는 기술적 분석의 의미를 부여하기 힘든 상황입니다.<br>🎯 **목표 및 손절**: 기술적 신뢰도가 낮아 목표가 및 손절가 설정이 무의미하나, 만약 대응한다면 1차 목표는 이전 매물대인 **1,400원**, 손절가는 **240일선(1,332원) 이탈 시**로 설정할 수 있습니다.<br></span></div><div class='kv-row' style='padding-left:0px'><span class='kv-key'>📰 이슈</span><span class='kv-value'><div class='kv-row' style='padding-left:12px'><span class='kv-key'>📰 뉴스</span><span class='kv-value'>DB 뉴스에 따르면 과거(2025년 7월 초) '방사능 오염수' 관련 테마로 급등한 이력이 있습니다.<br>이는 관련 이슈가 재부각될 경우 주가 변동성이 커질 수 있음을 의미합니다.<br>그러나 최근 5거래일 내에는 관련 뉴스가 없어 모멘텀이 부재한 상태입니다.<br></span></div><div class='kv-row' style='padding-left:12px'><span class='kv-key'>👍 긍정적 이슈</span><span class='kv-value'>✅ 과거 시장을 주도했던 테마 보유</span></div><div class='kv-row' style='padding-left:12px'><span class='kv-key'>👎 부정적 이슈</span><span class='kv-value'>❌ 돌파 시 거래량 절대 부족, ❌ 최근 모멘텀 부재</span></div><div class='kv-row' style='padding-left:12px'><span class='kv-key'>📝 요약</span><span class='kv-value'>240일 이평선 돌파라는 기술적 형태는 갖췄으나, '거래량 미수반'이라는 치명적인 단점으로 인해 분석 조건을 충족하지 못합니다.<br>단기 트레이딩 진입 시점으로 매우 부적절합니다.<br></span></div></span></div><div class='kv-row' style='padding-left:0px'><span class='kv-key'>💡 최종의견</span><span class='kv-value'>❌ **매수 비추천 (Negative)**<br>근거: 거래량 없는 돌파는 거짓 신호일 가능성이 매우 높습니다.<br>기술적 분석의 핵심 조건인 '강한 거래량을 동반한 돌파'에 전혀 부합하지 않으므로 투자 매력도가 현저히 낮습니다.<br></span></div></div>
+        </div>
+    </body>
+    </html>
+    

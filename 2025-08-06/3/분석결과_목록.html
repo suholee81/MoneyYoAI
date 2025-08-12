@@ -1,0 +1,60 @@
+
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>AI 분석 결과 목록</title>
+    <style>
+        body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; background: #f4f6fb; margin:0; padding:0;}
+        .container { max-width: 900px; margin: 40px auto; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px 0 rgba(30,34,90,0.08); padding: 2.5rem 2rem 2rem 2rem;}
+        h2 { color: #2b3a55; margin-bottom: 2rem; font-size: 2rem; font-weight: 700; letter-spacing: -1px;}
+        table { width: 100%; border-collapse: separate; border-spacing: 0; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 4px 0 rgba(30,34,90,0.04);}
+        th, td { padding: 14px 16px; text-align: left; font-size: 1rem;}
+        th { background: #f7f9fc; color: #3a405a; font-weight: 600; border-bottom: 1px solid #e3e8f0;}
+        td { background: #fff; border-bottom: 1px solid #f0f2f7;}
+        tr:last-child td { border-bottom: none;}
+        tr.clickable:hover { background: #e6f7ff; cursor: pointer;}
+        @media (max-width: 600px) {
+            .container { padding: 1rem 0.5rem;}
+            h2 { font-size: 1.3rem;}
+            th, td { font-size: 0.95rem; padding: 10px 8px;}
+        }
+    </style>
+    <script>
+        function goToDetail(filename) {
+            window.location.href = filename;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>종목별 AI 분석 결과 요약</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>종목코드</th>
+                    <th>종목명</th>
+                    <th>최종 투자의견</th>
+                </tr>
+            </thead>
+            <tbody>
+<tr class="clickable" onclick="goToDetail('091580_상신이디피.html')">
+            <td>091580</td>
+            <td><a href="091580_상신이디피.html" style="color:inherit;text-decoration:none;">상신이디피</a></td>
+            <td>⚠️ **보류 (Neutral)**. 기술적 분석 조건은 대부분 충족하며 차트 흐름이 매우 긍정적입니다. 하지만 '최근 5거래일 내 긍정적 뉴스'라는 핵심 조건이 충족되지 않고, 오히려 부정적 이슈가 발생하여 단기 트레이딩 관점에서는 변동성 확대가 우려됩니다. 기술적 지지선인 8,600원 부근에서 재차 반등이 확인될 때 접근하는 것이 안전해 보입니다.</td>
+        </tr>
+        <tr class="clickable" onclick="goToDetail('255220_SG.html')">
+            <td>255220</td>
+            <td><a href="255220_SG.html" style="color:inherit;text-decoration:none;">SG</a></td>
+            <td>⏳ **보류 (Neutral)**. 장기 이평선 지지라는 기술적 안정성은 확보되었으나, 거래량과 뉴스 모멘텀이라는 두 가지 핵심 조건이 충족되지 않았습니다. 새로운 모멘텀이 발생하기 전까지는 기간 조정이 이어질 수 있으므로, 섣부른 진입보다는 '관심 종목'으로 편입 후 추이를 지켜보는 전략이 권장됩니다.</td>
+        </tr>
+        <tr class="clickable" onclick="goToDetail('277410_인산가.html')">
+            <td>277410</td>
+            <td><a href="277410_인산가.html" style="color:inherit;text-decoration:none;">인산가</a></td>
+            <td>👍 **관심 (Positive)**. 분석 조건 중 '최근 뉴스'를 제외한 모든 기술적 조건에 부합하는 가장 이상적인 차트 패턴을 보여주고 있습니다. 모멘텀 부재가 아쉽지만, 지지선에서의 기술적 반등 가능성 자체에 비중을 둔다면 단기 트레이딩 관점에서 가장 매력적인 종목으로 판단됩니다. 손절 라인을 명확히 설정하고 분할 접근하는 전략이 유효합니다.</td>
+        </tr>
+        
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
