@@ -19,16 +19,38 @@ def find_analysis_files(root_dir="."):
         for file in files:
             if file == "분석결과_목록.html":
                 full_path = os.path.join(root, file)
-                relative_path = os.path.relpath(full_path, root_dir)
+                # 경로를 슬래시로 통일
+                relative_path = os.path.relpath(full_path, root_dir).replace('\\', '/')
+                folder_path = os.path.dirname(relative_path)
+                folder_name = os.path.basename(os.path.dirname(relative_path))
+                
                 analysis_files.append({
                     'full_path': full_path,
                     'relative_path': relative_path,
-                    'folder_path': os.path.dirname(relative_path),
-                    'folder_name': os.path.basename(os.path.dirname(relative_path))
+                    'folder_path': folder_path,
+                    'folder_name': folder_name
                 })
     
-    # 날짜별로 정렬
-    analysis_files.sort(key=lambda x: x['folder_path'])
+    # 날짜별로 정렬 (최근 날짜가 상위에 오도록)
+    def sort_key(x):
+        folder_path = x['folder_path']
+        # 날짜 패턴 찾기 (YYYY-MM-DD)
+        date_match = re.search(r'(\d{4}-\d{2}-\d{2})', folder_path)
+        if date_match:
+            date_str = date_match.group(1)
+            # 날짜를 역순으로 정렬 (최신 날짜가 먼저)
+            date_key = -int(date_str.replace('-', ''))
+            
+            # 날짜 다음 숫자 폴더 찾기 (예: 2025-08-07/1 → 1)
+            number_match = re.search(r'/(\d+)$', folder_path)
+            if number_match:
+                number = int(number_match.group(1))
+                # 큰 숫자가 위에 오도록 역순 정렬
+                return (date_key, -number)
+            return (date_key, 0)
+        return (0, folder_path)
+    
+    analysis_files.sort(key=sort_key)
     return analysis_files
 
 def parse_html_file(file_path):
@@ -51,12 +73,20 @@ def parse_html_file(file_path):
                     stock_name = cells[1].get_text(strip=True)
                     opinion = cells[2].get_text(strip=True)
                     
-                    # 링크 찾기
-                    link = cells[1].find('a')
-                    if link and link.get('href'):
-                        detail_link = link['href']
-                    else:
-                        detail_link = ""
+                    # onclick 속성에서 파일명 추출 (goToDetail 함수 호출)
+                    onclick = row.get('onclick')
+                    detail_link = ""
+                    if onclick:
+                        # onclick="goToDetail('파일명')" 형태에서 파일명 추출
+                        match = re.search(r"goToDetail\('([^']+)'\)", onclick)
+                        if match:
+                            detail_link = match.group(1)
+                    
+                    # onclick에서 찾지 못한 경우 href 링크에서 찾기
+                    if not detail_link:
+                        link = cells[1].find('a')
+                        if link and link.get('href'):
+                            detail_link = link['href']
                     
                     stocks.append({
                         'code': stock_code,
@@ -213,7 +243,7 @@ def generate_index_html(analysis_files):
     </style>
     <script>
         function goToDetail(filename) {
-            window.location.href = filename;
+            window.open(filename, '_blank');
         }
         
         function goToFolder(folderPath) {
@@ -282,12 +312,16 @@ def generate_index_html(analysis_files):
         else:
             display_date = folder_name
         
+        # 전체 폴더 경로를 표시 (날짜폴더 포함)
+        full_folder_display = folder_path.replace('\\', '/')  # Windows 경로 구분자 통일
+        folder_path_slash = folder_path.replace('\\', '/')
+        
         html_content += f'''
         <!-- {folder_path} -->
         <div class="date-section" data-date="{folder_path}">
             <div class="date-header">
-                <h2 class="date-title">📅 {display_date} 분석 결과</h2>
-                <a href="{folder_path}/분석결과_목록.html" class="folder-link" target="_blank">
+                <h2 class="date-title">📅 {full_folder_display} 분석 결과</h2>
+                <a href="{folder_path_slash}/분석결과_목록.html" class="folder-link" target="_blank">
                     📁 폴더 열기
                 </a>
             </div>
@@ -312,9 +346,14 @@ def generate_index_html(analysis_files):
                     if stock['detail_link'].startswith('http'):
                         detail_path = stock['detail_link']
                     else:
-                        detail_path = f"{folder_path}/{stock['detail_link']}"
+                        # 상대 경로인 경우 폴더 경로와 결합
+                        # Windows 경로 구분자를 슬래시로 통일
+                        folder_path_slash = folder_path.replace('\\', '/')
+                        detail_path = f"{folder_path_slash}/{stock['detail_link']}"
                 else:
-                    detail_path = "#"
+                    # detail_link가 없는 경우 기본 파일명으로 생성
+                    folder_path_slash = folder_path.replace('\\', '/')
+                    detail_path = f"{folder_path_slash}/{stock['code']}_{stock['name']}.html"
                 
                 # 투자의견에 따른 이모지 추가
                 opinion = stock['opinion']
@@ -329,7 +368,7 @@ def generate_index_html(analysis_files):
                 html_content += f'''
                         <tr class="clickable" onclick="goToDetail('{detail_path}')">
                             <td>{stock['code']}</td>
-                            <td><a href="{detail_path}" style="color:inherit;text-decoration:none;">{stock['name']}</a></td>
+                            <td><a href="{detail_path}" style="color:inherit;text-decoration:none;" target="_blank">{stock['name']}</a></td>
                             <td>{emoji} {html.escape(opinion)}</td>
                         </tr>
 '''
@@ -357,6 +396,7 @@ def generate_index_html(analysis_files):
                     const link = document.createElement('a');
                     link.href = date + '/분석결과_목록.html';
                     link.className = 'folder-link';
+                    // 날짜폴더까지 포함된 전체 경로 표시
                     link.textContent = title.replace('📅 ', '');
                     link.target = '_blank';
                     folderLinks.appendChild(link);
