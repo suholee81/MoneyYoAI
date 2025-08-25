@@ -1,0 +1,60 @@
+
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>AI 분석 결과 목록</title>
+    <style>
+        body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; background: #f4f6fb; margin:0; padding:0;}
+        .container { max-width: 900px; margin: 40px auto; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px 0 rgba(30,34,90,0.08); padding: 2.5rem 2rem 2rem 2rem;}
+        h2 { color: #2b3a55; margin-bottom: 2rem; font-size: 2rem; font-weight: 700; letter-spacing: -1px;}
+        table { width: 100%; border-collapse: separate; border-spacing: 0; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 4px 0 rgba(30,34,90,0.04);}
+        th, td { padding: 14px 16px; text-align: left; font-size: 1rem;}
+        th { background: #f7f9fc; color: #3a405a; font-weight: 600; border-bottom: 1px solid #e3e8f0;}
+        td { background: #fff; border-bottom: 1px solid #f0f2f7;}
+        tr:last-child td { border-bottom: none;}
+        tr.clickable:hover { background: #e6f7ff; cursor: pointer;}
+        @media (max-width: 600px) {
+            .container { padding: 1rem 0.5rem;}
+            h2 { font-size: 1.3rem;}
+            th, td { font-size: 0.95rem; padding: 10px 8px;}
+        }
+    </style>
+    <script>
+        function goToDetail(filename) {
+            window.location.href = filename;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>종목별 AI 분석 결과 요약</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>종목코드</th>
+                    <th>종목명</th>
+                    <th>최종 투자의견</th>
+                </tr>
+            </thead>
+            <tbody>
+<tr class="clickable" onclick="goToDetail('058610_에스피지.html')">
+            <td>058610</td>
+            <td><a href="058610_에스피지.html" style="color:inherit;text-decoration:none;">에스피지</a></td>
+            <td>✅ **관심(Watch) / 눌림목 매수**. 강력한 거래량을 동반한 장기 이평선 돌파와 우호적인 뉴스 흐름은 매우 긍정적입니다. 하지만 단기 급등에 따른 피로감과 지지 테스트 부재를 고려하여, 추격 매수보다는 240일선(약 24,700원) 부근에서 지지를 확인하며 분할 매수하는 것이 안정적인 전략으로 판단됩니다.</td>
+        </tr>
+        <tr class="clickable" onclick="goToDetail('225220_제놀루션.html')">
+            <td>225220</td>
+            <td><a href="225220_제놀루션.html" style="color:inherit;text-decoration:none;">제놀루션</a></td>
+            <td>🟢 **단기 매수(Short-term Buy)**. R&D 성과라는 명확한 모멘텀을 바탕으로 장기 이평선을 돌파한 점이 매우 긍정적입니다. 추격 매수보다는 240일선(약 2,510원) 부근에서 분할 매수하거나, 단기 급등 시 일부 차익 실현을 병행하는 전략이 유효해 보입니다.</td>
+        </tr>
+        <tr class="clickable" onclick="goToDetail('339950_아이비김영.html')">
+            <td>339950</td>
+            <td><a href="339950_아이비김영.html" style="color:inherit;text-decoration:none;">아이비김영</a></td>
+            <td>🟡 **보류(Hold) / 관망**. 480일선을 돌파했으나 거래량이 부족하여 기술적 신뢰도가 낮고, 주가를 견인할 만한 새로운 모멘텀이 부재합니다. 분석 조건에 부합하지 않으므로, 의미 있는 거래량 증가와 함께 240일선까지 안착하는 흐름이 확인되기 전까지는 관망하는 것이 바람직합니다.</td>
+        </tr>
+        
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
