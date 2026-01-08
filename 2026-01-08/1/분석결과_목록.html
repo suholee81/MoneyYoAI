@@ -1,0 +1,55 @@
+
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>AI 분석 결과 목록</title>
+    <style>
+        body { font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif; background: #f4f6fb; margin:0; padding:0;}
+        .container { max-width: 900px; margin: 40px auto; background: #fff; border-radius: 18px; box-shadow: 0 4px 24px 0 rgba(30,34,90,0.08); padding: 2.5rem 2rem 2rem 2rem;}
+        h2 { color: #2b3a55; margin-bottom: 2rem; font-size: 2rem; font-weight: 700; letter-spacing: -1px;}
+        table { width: 100%; border-collapse: separate; border-spacing: 0; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 4px 0 rgba(30,34,90,0.04);}
+        th, td { padding: 14px 16px; text-align: left; font-size: 1rem;}
+        th { background: #f7f9fc; color: #3a405a; font-weight: 600; border-bottom: 1px solid #e3e8f0;}
+        td { background: #fff; border-bottom: 1px solid #f0f2f7;}
+        tr:last-child td { border-bottom: none;}
+        tr.clickable:hover { background: #e6f7ff; cursor: pointer;}
+        @media (max-width: 600px) {
+            .container { padding: 1rem 0.5rem;}
+            h2 { font-size: 1.3rem;}
+            th, td { font-size: 0.95rem; padding: 10px 8px;}
+        }
+    </style>
+    <script>
+        function goToDetail(filename) {
+            window.location.href = filename;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>종목별 AI 분석 결과 요약</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>종목코드</th>
+                    <th>종목명</th>
+                    <th>최종 투자의견</th>
+                </tr>
+            </thead>
+            <tbody>
+<tr class="clickable" onclick="goToDetail('023790_동일스틸럭스.html')">
+            <td>023790</td>
+            <td><a href="023790_동일스틸럭스.html" style="color:inherit;text-decoration:none;">동일스틸럭스</a></td>
+            <td>✅ <b>적극 매수 (Trading Buy)</b><br>리스크가 있지만, 바닥권에서 대량 거래와 함께 장기 이평선을 뚫어낸 힘이 매우 강력합니다. 단기 눌림목(1,450~1,500원) 공략 유효.</td>
+        </tr>
+        <tr class="clickable" onclick="goToDetail('008700_아남전자.html')">
+            <td>008700</td>
+            <td><a href="008700_아남전자.html" style="color:inherit;text-decoration:none;">아남전자</a></td>
+            <td>⚖️ <b>관망 후 돌파 매수 (Watch)</b><br>거래량은 좋으나 장기 저항선(240일선)을 아직 넘지 못했습니다. <b>1,420원 안착</b>을 확인하고 진입하는 것이 안전합니다.</td>
+        </tr>
+        
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
