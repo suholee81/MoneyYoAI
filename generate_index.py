@@ -442,6 +442,9 @@ def generate_index_html(analysis_files):
 
 def main():
     """메인 함수"""
+    # 스크립트가 있는 디렉토리로 이동
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    
     print("🔍 AI 분석 결과 파일들을 찾는 중...")
     
     # 분석 파일들 찾기
